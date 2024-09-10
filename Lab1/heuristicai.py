@@ -10,7 +10,6 @@ CORNER_WEIGHT = 10
 FREE_SPACE_WEIGHT = 25
 MONOTONICITY_WEIGHT = 100
 MERGE_POTENTIAL_WEIGHT = 1
-#ISOLATION_PENALTY_WEIGHT = 100
 
 
  
@@ -67,9 +66,6 @@ def execute_move(move, board):
         sys.exit("No valid move")
  
 def board_equals(board, newboard):
-    """
-    Check if two boards are equal.
-    """
     return (newboard == board).all()
  
 def evaluate_board(board):
@@ -102,9 +98,9 @@ def evaluate_board(board):
  
 def evaluate_monotonicity(board):
     """
-    Reward boards that have increasing or decreasing rows/columns.
-    Monotonicity means that values in rows or columns should always increase or decrease.
-    The more monotonic, the higher the reward.
+    Zählt die Anzahl Zahlen die in einer Rheie oder in einer Spalte der grösse nach geordnet sind.
+    z.B incr: [2, 4, 8, 0] -> 2
+    z.B decr: [16, 8, 4, 32] -> 2
     """
     score = 0
  
@@ -126,7 +122,7 @@ def evaluate_monotonicity(board):
  
 def evaluate_merge_potential(board):
     """
-    Reward moves that bring two tiles with the same value together.
+    Findet heraus ob eine Zelle gemerged werden kann. Falls ja wird die Zahl mit 2 multipliziert und zurückgegeben.
     """
     score = 0
    
@@ -147,7 +143,7 @@ def evaluate_merge_potential(board):
 
 
 def update_weights(board):
-    global CORNER_WEIGHT, FREE_SPACE_WEIGHT, MONOTONICITY_WEIGHT, MERGE_POTENTIAL_WEIGHT, ISOLATION_PENALTY_WEIGHT
+    global CORNER_WEIGHT, FREE_SPACE_WEIGHT, MONOTONICITY_WEIGHT, MERGE_POTENTIAL_WEIGHT
  
     max_tile = np.max(board)
  
