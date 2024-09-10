@@ -112,7 +112,7 @@ def evaluate_heuristics(board):
 def evaluate_corner_strategy(board):
     max_tile = np.max(board)
     if board[3][0] == max_tile or board[3][3] == max_tile:
-        return max_tile
+        return 1
     return 0
 
 def evaluate_free_spaces(board):
@@ -199,16 +199,16 @@ def update_weights(board):
         ISOLATION_PENALTY_WEIGHT = 10
     elif 256 >= max_tile <= 1024:  # Mid Game
         CORNER_WEIGHT = 120
-        FREE_SPACE_WEIGHT = 190
+        FREE_SPACE_WEIGHT = 100
         MONOTONICITY_WEIGHT = 120
         MERGE_POTENTIAL_WEIGHT = 50
         ISOLATION_PENALTY_WEIGHT = 20
     else:  # Late Game
-        CORNER_WEIGHT = 160
-        FREE_SPACE_WEIGHT = 210
-        MONOTONICITY_WEIGHT = 175
-        MERGE_POTENTIAL_WEIGHT = 70
-        ISOLATION_PENALTY_WEIGHT = 70
+        CORNER_WEIGHT = 150
+        FREE_SPACE_WEIGHT = 80
+        MONOTONICITY_WEIGHT = 150
+        MERGE_POTENTIAL_WEIGHT = 80
+        ISOLATION_PENALTY_WEIGHT = 50
 
 def adjust_lookahead_depth(empty_tiles):
     if empty_tiles > 8:
