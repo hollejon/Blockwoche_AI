@@ -4,6 +4,15 @@ import game
 import sys
  
 UP, DOWN, LEFT, RIGHT = 0, 1, 2, 3
+
+# Global weights, dynamically updated during the game
+CORNER_WEIGHT = 10
+FREE_SPACE_WEIGHT = 25
+MONOTONICITY_WEIGHT = 100
+MERGE_POTENTIAL_WEIGHT = 1
+#ISOLATION_PENALTY_WEIGHT = 100
+
+
  
 def find_best_move(board):
     """
@@ -13,6 +22,8 @@ def find_best_move(board):
     """
     best_move = -1
     best_score = -float('inf')
+
+    update_weights(board)
    
     # Try all possible moves and evaluate them
     for move in [UP, DOWN, LEFT, RIGHT]:
@@ -75,17 +86,17 @@ def evaluate_board(board):
     # Corner strategy: prioritize having the largest tile in a corner
     max_tile = np.max(board)
     if board[0][0] == max_tile or board[0][3] == max_tile or board[3][0] == max_tile or board[3][3] == max_tile:
-        score += max_tile * 10
+        score += max_tile * CORNER_WEIGHT
    
     # Free spaces: prioritize boards with more empty tiles
     empty_spaces = len(np.where(board == 0)[0])
-    score += empty_spaces * 25
+    score += empty_spaces * FREE_SPACE_WEIGHT
    
     # Monotonicity: prioritize boards where rows/columns are increasing or decreasing
-    score += evaluate_monotonicity(board)
+    score += evaluate_monotonicity(board) * MONOTONICITY_WEIGHT
    
     # Merging potential: prioritize moves that bring same value tiles next to each other
-    score += evaluate_merge_potential(board)
+    score += evaluate_merge_potential(board) * MERGE_POTENTIAL_WEIGHT
    
     return score
  
@@ -110,7 +121,7 @@ def evaluate_monotonicity(board):
     for col in board.T:
         score += calculate_monotonicity(col)
    
-    return score * 100  # weight the score more heavily
+    return score
  
  
 def evaluate_merge_potential(board):
@@ -135,7 +146,28 @@ def evaluate_merge_potential(board):
 
 
 
+def update_weights(board):
+    global CORNER_WEIGHT, FREE_SPACE_WEIGHT, MONOTONICITY_WEIGHT, MERGE_POTENTIAL_WEIGHT, ISOLATION_PENALTY_WEIGHT
+ 
+    max_tile = np.max(board)
+ 
+    if max_tile < 256:  # Early Game
+        CORNER_WEIGHT = 10
+        FREE_SPACE_WEIGHT = 25
+        MONOTONICITY_WEIGHT = 100
+        MERGE_POTENTIAL_WEIGHT = 1
+ 
+    elif 256 >= max_tile <= 1024:  # Mid Game
+        CORNER_WEIGHT = 10
+        FREE_SPACE_WEIGHT = 25
+        MONOTONICITY_WEIGHT = 100
+        MERGE_POTENTIAL_WEIGHT = 1
 
+    else:  # Late Game
+        CORNER_WEIGHT = 10
+        FREE_SPACE_WEIGHT = 25
+        MONOTONICITY_WEIGHT = 100
+        MERGE_POTENTIAL_WEIGHT = 1
 
 
 
