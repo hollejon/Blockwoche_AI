@@ -7,7 +7,7 @@ import sys
 UP, DOWN, LEFT, RIGHT = 0, 1, 2, 3
 
 # Depth limit for the Expectimax search (can be adjusted based on performance)
-MAX_DEPTH = 3
+MAX_DEPTH = 4
 
 def find_best_move(board):
     """
