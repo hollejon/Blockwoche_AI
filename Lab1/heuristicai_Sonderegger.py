@@ -13,7 +13,7 @@ def find_best_move(board):
     """
     best_move = -1
     best_score = -float('inf')
-   
+    
     # Try all possible moves and evaluate them
     for move in [UP, DOWN, LEFT, RIGHT]:
         new_board = execute_move(move, board)
@@ -29,7 +29,7 @@ def find_best_move(board):
         if score > best_score:
             best_score = score
             best_move = move
-   
+    
     # If no move improves the board, fall back to a random move
     if best_move == -1:
         best_move = find_best_move_random_agent()
@@ -76,7 +76,7 @@ def evaluate_board(board):
     max_tile = np.max(board)
     if board[0][0] == max_tile or board[0][3] == max_tile or board[3][0] == max_tile or board[3][3] == max_tile:
         score += max_tile * 10
-   
+    
     # Free spaces: prioritize boards with more empty tiles
     empty_spaces = len(np.where(board == 0)[0])
     score += empty_spaces * 25
@@ -110,7 +110,7 @@ def evaluate_monotonicity(board):
     for col in board.T:
         score += calculate_monotonicity(col)
    
-    return score * 100  # weight the score more heavily
+    return score
  
  
 def evaluate_merge_potential(board):
@@ -118,7 +118,7 @@ def evaluate_merge_potential(board):
     Reward moves that bring two tiles with the same value together.
     """
     score = 0
-   
+    
     # Check rows for merge potential
     for row in board:
         for i in range(len(row) - 1):
@@ -130,5 +130,5 @@ def evaluate_merge_potential(board):
         for i in range(len(col) - 1):
             if col[i] == col[i + 1]:
                 score += col[i] * 2
-   
+    
     return score
