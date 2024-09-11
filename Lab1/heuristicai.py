@@ -137,6 +137,21 @@ def evaluate_merge_potential(board):
         for i in range(len(col) - 1):
             if col[i] == col[i + 1]:
                 score += col[i] * 2
+
+    def locate_highest_tile (board):
+        position = (0,0)
+        for i in range(4):
+            for j in range(4):
+                if board[i][j] > np.max(board):
+                    position = (i,j)
+        return  position
+
+    # Check if second highest tile is neext to highest tile
+    if board[1][0] == np.max(board)/2 or board[0][1] == np.max(board)/2 or board[0][2] == np.max(board)/2 or board[1][3] == np.max(board)/2:
+        score += 1
+    
+    if board[2][0] == np.max(board)/2 or board[3][1] == np.max(board)/2 or board[3][2] == np.max(board)/2 or board[2][3] == np.max(board)/2:
+        score += 1
    
     return score
 
