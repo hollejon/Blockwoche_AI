@@ -49,7 +49,7 @@ def find_best_move_ai_agent(board):
             adjacent_tiles.append((position[0], position[1]+1))
         return adjacent_tiles
     
-    def find_move_with_most_merged_tiles(board):
+    #def find_move_with_most_merged_tiles(board):
 
 
 def execute_move(move, board):
